@@ -1,0 +1,167 @@
+openapi: 3.0.0
+info:
+  description: User secure server
+  title: User secure server API description
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+security:
+  - basicAuth: []
+paths:
+  /login:
+    post:
+      tags:
+        - login
+      summary: generates a session token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Session Token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionToken"
+        "404":
+          description: Not found, error code 404. Sorry, something is wrong.
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: Retrieves a user by id
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Error code 404. User does not exist.
+        "403":
+          description: Missing or invalid authentication
+    delete:
+      tags:
+        - users
+      summary: Deletes a user by id
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User was deleted successfully
+        "404":
+          description: Error code 404. User couldn't be deleted.
+        "403":
+          description: Missing or invalid authentication
+  /users/{name}:
+    get:
+      tags:
+        - users
+      summary: Returns users by name
+      security:
+        - basicAuth: []
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersArray"
+        "404":
+          description: Error code 404. User does not exist.        
+        "403":
+          description: Missing or invalid authentication.
+  /users:
+    post:
+      tags:
+        - users
+      summary: Creates a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: User was created successfully
+        "404":
+          description: Not found, error code 404. Sorry, something is wrong.
+        "403":
+          description: Missing or invalid authentication
+components:
+  securitySchemes:
+    basicAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+        email:
+          type: string
+        workingPosition:
+          type: array
+          items:
+            type: string
+          description: User Senioirity
+          
+    UsersArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
+    SessionToken:
+      type: object
+      properties:
+        username:
+          type: string
+        accessRights:
+          type: array
+          items:
+            type: string
+          description: An array of functionalities that user can be executed for example, CREATE, READ, DELETE
+        expirationTime:
+          type: string
+          description: Deadline in which a token can be used
+        valid:
+          type: boolean
+        sessionTokenId:
+          type: string    
+        
+        

@@ -1,0 +1,7 @@
+export enum WorkingPosition {
+  JUNIOR = 'JUNIOR',
+  PROGRAMMER = 'PROGRAMMER',
+  ENGINEER = 'ENGINEER',
+  EXPERT = 'EXPERT',
+  MANAGER = 'MANAGER',
+}

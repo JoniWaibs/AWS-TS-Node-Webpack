@@ -1,0 +1,64 @@
+################## LOGIN ENDPOINTS ##################
+
+## HOW TO USE ##
+# You must login witn Alice credentials
+# then, you should set sessionTokenId of response as Authorization(Header)
+# and then you can send other requests setting previouly this Auth token
+# for example: You can login or create new users, but you always need a token
+
+### SUCCESSFULLY login request
+POST http://localhost:8000/login
+Content-Type: application/json
+
+{
+  "username": "Jota",
+  "password": "Password"
+}
+
+### ERROR login request
+POST http://localhost:8000/login
+Content-Type: application/json
+
+{
+  "username": "Peter",
+  "password": "sarasa"
+}
+
+################## USERS ENDPOINTS ##################
+
+### SUCCESSFULLY user request by Id
+GET http://localhost:8000/users?id=ECfWYoufrqiXXONN
+Authorization: jl7van77i9d
+
+### SUCCESSFULLY user request by name
+GET http://localhost:8000/users?name=Emily
+Authorization: x6ngzsqn9c
+
+### SUCCESSFULLY user delete by Id
+DELETE http://localhost:8000/users?id=CaPiTHRETmCVlqwP
+Authorization: 1ts6c8okanp
+
+### ERROR Token invalid request
+GET http://localhost:8000/users?id=WkOdiDXmu9gWiCrG
+Authorization: 12qaf5hkdlqaaaaaa
+
+### ERROR user request (user does not exist)
+GET http://localhost:8000/users?id=8Numl5anULzQwIyTsarasa
+Authorization: 12qaf5hkdlq
+
+### ERROR user request (error in request)
+GET http://localhost:8000/users?isadasdd=8Numl5anULzQwIyT
+Authorization: 12qaf5hkdlq
+
+### SUCCESSFULLY create user
+POST http://localhost:8000/users
+Authorization: 57yf7e0h2w4
+Content-Type: application/json
+
+{
+  "name": "Emily Rose",
+  "age": 27,
+  "email": "emily@email.com",
+  "workingPosition": "Trainee"
+}
+
